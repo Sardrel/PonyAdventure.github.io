@@ -1,13 +1,5 @@
 (function(storyContent) {
 	
-	function checkPassword() {
-            var password = prompt("Please enter the password:");
-            if (password !== "Tempest") {
-                alert("Incorrect password!");
-                window.location = "https://example.com"; // Redirect to a different page
-            }
-        }
-
     // Create ink story from the content using inkjs
     var story = new inkjs.Story(storyContent);
 const currentVersion = 'v3';  // Change this version number when you update your code

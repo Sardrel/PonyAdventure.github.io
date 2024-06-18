@@ -12,10 +12,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style.css">
-
+ <script>
+        function checkPassword() {
+            var password = prompt("Please enter the password:");
+            if (password !== "Tempest") {
+                alert("Incorrect password! To play the Early Access make sure you Subscribe to my SubscribeStar");
+                window.location = "https://subscribestar.adult/ashy-skies"; // Redirect to a different page
+            }
+        }
+    </script>
 </head>
 	
-<body>
+<body onload="checkPassword()">
 	<div class= "title" id="logop">Pony Adventure</div>
     <div class="outerContainer">
 	<audio id="myAudio" src="Music\Canterhorn\Main Theme.mp3" autoplay loop > </audio>
