@@ -632,19 +632,19 @@ a {
 
 /* Panel containing tab buttons. */
 .tabpanel{
-    width: 300px;
-    height: 532px;
+    width: 360px;
+    height: 500px;
 	top: 236px;
     margin-top: 5px;
     text-align: center;
 	position: fixed;
 	bottom: 150px;
-	left:308px;
+	left:276px;
 }	
 
 /* Tab button. */
 .tab{
-    width: 300px;
+    width: 160px;
     height: 64px;
     margin-bottom: 15px;
     border: 0px;
