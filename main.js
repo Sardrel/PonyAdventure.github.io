@@ -619,7 +619,7 @@ if (storedVersion !== currentVersion) {
                 }	
 				if( splitTag && splitTag.property == "SHOPCLEAR" ) {
                     
-					removeAll('h2')
+					removeAll('shop-title')
     
                 }	
 
@@ -892,7 +892,7 @@ if (storedVersion !== currentVersion) {
         if (rewindEl) rewindEl.addEventListener("click", function(event) {
             removeAll("p");
 			removeAll("li");
-			removeAll('h2');
+			removeAll('shop-title');
 			removeAll('.shop-header');
             removeAll("#story img");
 			removeAll(".choice");
