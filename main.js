@@ -39,6 +39,7 @@ story.BindExternalFunction("get_name", () => {
 		function percent(x,y){
 			return (x/y)*100;
 		};
+		let isInShop = false;
 // Function to roll a specified-sided die
 function rollDie(sides) {
   return Math.floor(Math.random() * sides) + 1;
@@ -57,8 +58,6 @@ function rollDie(sides) {
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-
 
 
 function calculateDamage(damage) {
@@ -108,8 +107,15 @@ function updateInventoryUI() {
     descriptionSpan.textContent = item.description;
     li.appendChild(descriptionSpan);
 
-    // Add "Sell" and "Equip" buttons
-    const sellButton = createButton('Drop', () => dropItem(item));
+    // Add "Sell" or "Drop" and "Equip" buttons
+    let actionButton;
+    if (actionButton) {
+      actionButton.removeEventListener('click', actionButton.onclick); // Detach old listener
+    }
+
+    actionButton = createButton(isInShop ? 'Sell' : 'Drop', () => isInShop ? sellItem(item) : dropItem(item));
+
+
     const equipButton = createButton('Equip', () => equipItem(item));
     const useButton = createButton('Use', () => performItemAction(item));
 
@@ -138,12 +144,12 @@ function updateInventoryUI() {
     }
 
     if (item.isDroppable) {
-      li.appendChild(sellButton);
+      li.appendChild(actionButton);
     } else {
       // Add a class to the button and disable it if not applicable
-      sellButton.classList.add('disabled');
-      sellButton.disabled = true;
-      li.appendChild(sellButton);
+      actionButton.classList.add('disabled');
+      actionButton.disabled = true;
+      li.appendChild(actionButton);
     }
 
     itemsList.appendChild(li);
@@ -200,6 +206,39 @@ function dropItem(item) {
       modifyInkBits(-1); // Subtract 1 from Ink variable for dropped 'Bits'
     }
   }
+}
+
+function sellItem(item) {
+  // Find the item in the inventory
+  const existingItemIndex = inventory.findIndex(existingItem => existingItem.name === item.name);
+
+  if (existingItemIndex !== -1) {
+    const itemQuantity = inventory[existingItemIndex].quantity;
+
+    if (itemQuantity > 1) {
+      // If the quantity in the inventory is greater than 1, decrement it
+      inventory[existingItemIndex].quantity--;
+    } else {
+      // If the quantity is 1, remove the item from the inventory
+      inventory.splice(existingItemIndex, 1);
+
+      // Call a function to unequip the item if it was removed from inventory
+      unequipItem(item);
+    }
+
+    // Add the item's value to the player's currency
+   
+
+    // Update the UI for the inventory
+	modifyInkBits(item.price);
+      updateInventoryUI();
+
+
+    console.log(`You sold ${item.name} for ${item.price} currency.`);
+  } else {
+    console.error(`Item '${item.name}' not found in inventory.`);
+  }
+  
 }
 
 const equippedItems = [];
@@ -361,8 +400,8 @@ const npcSellers = {
     'Citrus': { 
 	shopTitle: 'CITRUS\'\S ORANGES',
 	inventory: [
-	createItem('Orange', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile103.png', false, true, false, '0', 0),
-	createItem('Orange Juice', 'Restores  bit of health', 5, 'IMAGE/Items/Food/tile212.png', false, true, false, '0', 0)
+	createItem('Orange', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile103.png', false, true, true, '0', 5),
+	createItem('Orange Juice', 'Restores  bit of health', 5, 'IMAGE/Items/Food/tile212.png', false, true, true, '0', 20)
 	] 
 
 		} 
@@ -376,48 +415,54 @@ function displayShopInventory(sellerName, shopTitle) {
     }
 
     const currentInventory = currentSeller.inventory;
-
+    const storyElement = document.getElementById('story');
 
     // Add shop title
-    const titleElement = document.createElement('h2');
-	titleElement.classList.add('shop-title');
+	const existingShopTitle = document.querySelector('.shop-title');
+    if (!existingShopTitle) {
+	const titleElement = document.createElement('h2');
+    titleElement.classList.add('shop-title');
     titleElement.textContent = shopTitle;
-    document.getElementById('story').appendChild(titleElement);
+    storyElement.appendChild(titleElement);
+	}
+    // Check if header row already exists
+    const existingHeader = document.querySelector('.shop-header');
+    if (!existingHeader) {
+        // Create header row
+        const headerRow = document.createElement('div');
+        headerRow.classList.add('shop-header');
 
-    // Create header row
-	
+        const nameHeader = document.createElement('span');
+        nameHeader.textContent = 'Name';
+        headerRow.appendChild(nameHeader);
 
-    const headerRow = document.createElement('div');
-    headerRow.classList.add('shop-header');
-	
-    
-    const nameHeader = document.createElement('span');
-    nameHeader.textContent = 'Name';
-    headerRow.appendChild(nameHeader);
+        const descriptionHeader = document.createElement('span');
+        descriptionHeader.textContent = 'Description';
+        headerRow.appendChild(descriptionHeader);
 
-    const descriptionHeader = document.createElement('span');
-    descriptionHeader.textContent = 'Description';
-    headerRow.appendChild(descriptionHeader);
+        const priceHeader = document.createElement('span');
+        priceHeader.textContent = 'Price';
+        headerRow.appendChild(priceHeader);
 
-    const priceHeader = document.createElement('span');
-    priceHeader.textContent = 'Price';
-    headerRow.appendChild(priceHeader);
+        const quantityHeader = document.createElement('span');
+        quantityHeader.textContent = 'Quantity';
+        headerRow.appendChild(quantityHeader);
 
-    const quantityHeader = document.createElement('span');
-    quantityHeader.textContent = 'Quantity';
-    headerRow.appendChild(quantityHeader);
-	
-	const emptyEndSpan = document.createElement('span');
-	emptyEndSpan.textContent = '';
-    headerRow.appendChild(emptyEndSpan);
-	
-    document.getElementById('story').appendChild(headerRow);
+        const buttonHeader = document.createElement('span');
+        buttonHeader.textContent = '';
+        headerRow.appendChild(buttonHeader);
+
+        // Append header row to the story element
+        storyElement.appendChild(headerRow);
+    }
 
     currentInventory.forEach((item) => {
         // Check if the item is already in the story container
         const existingItemInStory = document.querySelector(`#story li[data-name="${item.name}"]`);
 
         if (!existingItemInStory) {
+			
+			
             // Create a new item element
             const li = document.createElement('li');
             li.classList.add('shop-item');
@@ -448,6 +493,7 @@ function displayShopInventory(sellerName, shopTitle) {
             // Add "Buy" button
             const buyButton = createButton('Buy');
             buyButton.addEventListener('click', () => buyItemFromShop(item, sellerName));
+			buyButton.classList.add('buy-button');
             li.appendChild(buyButton);
 
             // Disable the buy button if quantity is zero or less
@@ -607,22 +653,31 @@ if (storedVersion !== currentVersion) {
                 }
 				
 						
+						
+						
+				 // SHOP: SHOP NAME	
 				if( splitTag && splitTag.property == "SHOP" ) {
+					if(splitTag.val == "CLEAR"){
+					removeAll('li');
+					removeAll('.shop-title');
+					removeAll('.shop-header');
+					isInShop = false;
+					updateInventoryUI();	
+					}
+					else{
                     sellerName = splitTag.val;
 					if (npcSellers.hasOwnProperty(sellerName)) {
+				    isInShop = true;
+					updateInventoryUI();
 					const shopTitle = npcSellers[sellerName].shopTitle; // Get the shop title for the seller
 					displayShopInventory(sellerName, shopTitle); // Pass the shop title to the function
 					delay += 200.0;
 					} else {
 					console.error(`Seller '${sellerName}' not found in npcSellers.`);
+					
     }
-                }	
-				if( splitTag && splitTag.property == "SHOPCLEAR" ) {
-                    
-					removeAll('shop-title')
-    
-                }	
-
+                }
+				}				
                 // IMAGE: src
                 if( splitTag && splitTag.property == "IMAGE" ) {
                     var imageElement = document.createElement('img');
@@ -1638,7 +1693,7 @@ console.log(`You delt ${damageAmount+Attack_Mod} damage.`);
 const npcSellers = {
     'Citrus': { 
 	inventory: [
-	createItem('Orange', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile103.png', false, false, false, '0', 5),
+	createItem('Orange', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile103.png', false, false, false, '5', 5),
 	createItem('Orange Juice', 'Restores  bit of health', 5, 'IMAGE/Items/Food/tile212.png', false, false, false, '0', 20)
 	] 
 	}, // Add blacksmith's inventory

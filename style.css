@@ -86,6 +86,7 @@ body{
         overflow: hidden;
     }
 }
+
 .shop-header {
     font-family: Sedgwick Ave Display;
     color: white;
@@ -94,9 +95,9 @@ body{
 	margin: 0 auto; /* Center the container horizontally within its parent */
     display: flex;
     align-items: center;
-    padding: 10px;
-	width: 75%px;
-	grid-column: 2 / span 4;
+	width: 112%;
+	padding-left: 30px;
+	border-bottom: 1px solid #ccc; /* Optional: add a border between items */
 }
 
 .shop-title{
@@ -104,9 +105,11 @@ body{
     font-size: 14pt;
     font-family: sans-serif;
     font-weight: lighter;
-	 color: white;
-     background-color: #557D8B;
-	 width: 710px;
+	 color: #191919;
+     background-color: #E1E8EB;
+	 width: 100%;
+	 align-items: center;
+	 border-bottom: 5px solid #bbb; /* Optional: add a border between items */
 }
 
 
@@ -115,6 +118,8 @@ body{
     padding: 10px; /* Add padding for spacing */
 	width: 260px;
 }
+
+
 /* Container for each shop item */
 .shop-item {
 	text-align: center; /* Center the content horizontally */
@@ -132,6 +137,18 @@ body{
 
 .shop-item Button {
    width: 90px;
+    background-color: #E1E8EB;
+    color: #191919;
+    border: 2px solid #557D8B;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.shop-item Button:hover{
+	background-color: #D0D8DC;
+    color: #191919;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
