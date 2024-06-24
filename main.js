@@ -114,7 +114,7 @@ function updateInventoryUI() {
     }
 
     actionButton = createButton(isInShop ? 'Sell' : 'Drop', () => isInShop ? sellItem(item) : dropItem(item));
-
+	actionButton.classList.add('buy-button');
 
     const equipButton = createButton('Equip', () => equipItem(item));
     const useButton = createButton('Use', () => performItemAction(item));
@@ -126,9 +126,11 @@ function updateInventoryUI() {
 
     // Add buttons only if applicable
     if (item.canEquip) {
+		equipButton.classList.add('buy-button');
       li.appendChild(equipButton);
     } else {
       // Add a class to the button and disable it if not applicable
+	  equipButton.classList.add('buy-button');
       equipButton.classList.add('disabled');
       equipButton.disabled = true;
       li.appendChild(equipButton);
@@ -136,17 +138,22 @@ function updateInventoryUI() {
 
     if (item.hasAction) {
       li.appendChild(useButton);
+	  useButton.classList.add('buy-button');
     } else {
       // Add a class to the button and disable it if not applicable
+	  useButton.classList.add('buy-button');
       useButton.classList.add('disabled');
       useButton.disabled = true;
       li.appendChild(useButton);
+	  
     }
 
     if (item.isDroppable) {
       li.appendChild(actionButton);
+	  actionButton.classList.add('buy-button');
     } else {
       // Add a class to the button and disable it if not applicable
+	  actionButton.classList.add('buy-button');
       actionButton.classList.add('disabled');
       actionButton.disabled = true;
       li.appendChild(actionButton);

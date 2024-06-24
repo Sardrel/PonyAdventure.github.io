@@ -673,6 +673,7 @@ a {
     position: relative; /* Enables blinking */
 	bottom:0px;
     overflow: hidden;
+	font-family: Sedgwick Ave Display;
 }
 
 /* Tab button onhover. */
@@ -784,6 +785,7 @@ img {
 }
 /* One of the four buttons at the bottom left. */
 .uibutton{
+	font-family: Sedgwick Ave Display;
     width: 135px;
     height: 35px;
     margin-bottom: 5px;
@@ -791,7 +793,6 @@ img {
     background-color: #2F444C;  /* Main */
     color: white;               /* Text */
     border: 0px;
-    font-family: 'Interface';
     font-size: 16px;
     cursor: pointer;
 	bottom:0px;
@@ -1573,6 +1574,7 @@ button {
 
 /* Tab button. */
 .tab{
+	
     width: 75%;
     height: 50%;
     margin-bottom: 5px;
@@ -1585,6 +1587,7 @@ button {
     position: relative; /* Enables blinking */
 	bottom:0px;
     overflow: hidden;
+	font-family: Sedgwick Ave Display;
 }
 
 /* Tab button onhover. */
@@ -1617,6 +1620,7 @@ text-shadow: 1px 1px 2px black;}
 }
 
 .uibutton{
+	font-family: Sedgwick Ave Display;
     width: 110px;
     height: 25px;
     margin-bottom: 3px;
