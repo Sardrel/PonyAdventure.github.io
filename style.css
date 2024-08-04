@@ -527,7 +527,7 @@ text-shadow: 1px 1px 2px black;}
   Enables <iframe> support work on itch.io when using mobile iOS
 */
 .outerContainer {
-    position: fixed;
+    position: Absolute;
     display: block;
     margin: 0;
     padding: 0;
