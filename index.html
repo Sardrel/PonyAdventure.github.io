@@ -12,15 +12,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style.css">
- <script>
-        function checkPassword() {
-            var password = prompt("Please enter the password:");
-            if (password !== "Fizzlepop") {
-                alert("Incorrect password! To play the Early Access make sure you sign up to Pony Adventure's Patreon");
-                window.location = "https://www.patreon.com/user?u=65513562"; // Redirect to a different page
-            }
+<script>
+    const currentPassword = "Fizzlepop"; // The current password
+
+    function checkPassword() {
+        const storedPassword = localStorage.getItem("storedPassword");
+
+        // Check if the stored password matches the current password
+        if (storedPassword === currentPassword) {
+            return; // If the passwords match, exit the function
         }
-    </script>
+
+        var password = prompt("Please enter the password:");
+        if (password === currentPassword) {
+            // Save the current password in localStorage
+            localStorage.setItem("storedPassword", currentPassword);
+        } else {
+            alert("Incorrect password! To play the Early Access make sure you sign up to Pony Adventure's Patreon");
+            window.location = "https://www.patreon.com/user?u=65513562"; // Redirect to a different page
+        }
+    }
+
+    checkPassword(); // Call the function when the page loads
+</script>
 </head>
 	
 <body onload="checkPassword()">

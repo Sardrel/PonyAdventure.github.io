@@ -405,10 +405,18 @@ function createItem(name, description, quantity, imageSrc, canEquip = false, has
 }
 const npcSellers = {
     'Citrus': { 
-	shopTitle: 'CITRUS\'\S ORANGES',
+	shopTitle: 'CITRUS\'\ ORANGES',
 	inventory: [
 	createItem('Orange', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile103.png', false, true, true, '0', 5),
 	createItem('Orange Juice', 'Restores  bit of health', 5, 'IMAGE/Items/Food/tile212.png', false, true, true, '0', 20)
+	] 
+
+		},
+		'Honeycrisp': { 
+	shopTitle: 'HONEYCRISP\'\S STORE',
+	inventory: [
+	createItem('Apples', 'Restores a little bit of health', 5, 'IMAGE/Items/Food/tile034.png', false, true, true, '0', 5),
+	createItem('Apple Juice', 'Restores  bit of health', 5, 'IMAGE/Items/Food/tile213.png', false, true, true, '0', 10)
 	] 
 
 		} 
