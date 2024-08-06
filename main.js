@@ -1279,6 +1279,7 @@ function removeAll(selector) {
 	hideAllPages();
 	page1.classList.add("show");
 	document.querySelector('.outerContainer').style.overflowY = 'auto';
+	document.querySelector('.outerContainer').scrollTop = document.querySelector('.outerContainer').scrollHeight;	
 	});
 
 	btnShowPage2.addEventListener("click", function() {
@@ -1459,7 +1460,7 @@ function showImages(containerId) {
 			else if (variableValue < 9 ){document.getElementById("ConstitutionComment").innerText = "Easily Winded."}
 			else if (variableValue < 11 ){document.getElementById("ConstitutionComment").innerText = "Average."}
 			else if (variableValue < 13 ){document.getElementById("ConstitutionComment").innerText= "Fortified."}
-			else if (variableValue < 15 ){document.getElementById("ConstitutionComment").innerText = "Peak Physique"}
+			else if (variableValue < 15 ){document.getElementById("ConstitutionComment").innerText = "Peak Physique."}
 			else if (variableValue < 17 ){document.getElementById("ConstitutionComment").innerText = "Perfect Vitality."}
 			else if (variableValue < 19 ){document.getElementById("ConstitutionComment").innerText = "Never wears down."}
 			else if (variableValue === 20 ){document.getElementById("ConstitutionComment").innerText = "I can do this all day."}
@@ -1472,8 +1473,8 @@ function showImages(containerId) {
 			else if (variableValue < 7 ){document.getElementById("IntelligenceComment").innerText = "Complete Ditz."}
 			else if (variableValue < 9 ){document.getElementById("IntelligenceComment").innerText = "Forgetful"}
 			else if (variableValue < 11 ){document.getElementById("IntelligenceComment").innerText = "Average."}
-			else if (variableValue < 13 ){document.getElementById("IntelligenceComment").innerText= "Logical"}
-			else if (variableValue < 15 ){document.getElementById("IntelligenceComment").innerText = "Fairly Intelligent"}
+			else if (variableValue < 13 ){document.getElementById("IntelligenceComment").innerText= "Logical."}
+			else if (variableValue < 15 ){document.getElementById("IntelligenceComment").innerText = "Fairly Intelligent."}
 			else if (variableValue < 17 ){document.getElementById("IntelligenceComment").innerText = "Very Intelligent."}
 			else if (variableValue < 19 ){document.getElementById("IntelligenceComment").innerText = "Smartest in the Room"}		
 			else if (variableValue === 20 ){document.getElementById("IntelligenceComment").innerText = "Famous Genius"}
@@ -1481,16 +1482,16 @@ function showImages(containerId) {
 		story.ObserveVariable("wisdom", function(variableName, variableValue){
 			document.getElementById("WisdomNum").innerText = variableValue
 		if (variableValue === 1) {document.getElementById("WisdomComment").innerText = "Barely Aware."}
-			else if (variableValue < 3) {document.getElementById("WisdomComment").innerText = "Oblivious"}
-			else if (variableValue < 5) {document.getElementById("WisdomComment").innerText = "No Forethought"}
-			else if (variableValue < 7 ){document.getElementById("WisdomComment").innerText = "No Common Sense"}
-			else if (variableValue < 9 ){document.getElementById("WisdomComment").innerText = "Unaware"}
+			else if (variableValue < 3) {document.getElementById("WisdomComment").innerText = "Oblivious."}
+			else if (variableValue < 5) {document.getElementById("WisdomComment").innerText = "No Forethought."}
+			else if (variableValue < 7 ){document.getElementById("WisdomComment").innerText = "No Common Sense."}
+			else if (variableValue < 9 ){document.getElementById("WisdomComment").innerText = "Unaware."}
 			else if (variableValue < 11 ){document.getElementById("WisdomComment").innerText = "Average."}
 			else if (variableValue < 13 ){document.getElementById("WisdomComment").innerText= "Insightful."}
 			else if (variableValue < 15 ){document.getElementById("WisdomComment").innerText = "Intuitive."}
 			else if (variableValue < 17 ){document.getElementById("WisdomComment").innerText = "Amazingly Perceptive."}
-			else if (variableValue < 19 ){document.getElementById("WisdomComment").innerText = "Source of Wisdom"}
-			else if (variableValue === 20 ){document.getElementById("WisdomComment").innerText = "Nearly Prescient"}
+			else if (variableValue < 19 ){document.getElementById("WisdomComment").innerText = "Source of Wisdom."}
+			else if (variableValue === 20 ){document.getElementById("WisdomComment").innerText = "Nearly Prescient."}
 		
 		});
 		story.ObserveVariable("charisma", function(variableName, variableValue){
@@ -1504,8 +1505,8 @@ function showImages(containerId) {
 			else if (variableValue < 13 ){document.getElementById("CharismaComment").innerText= "Mildy Interesting."}
 			else if (variableValue < 15 ){document.getElementById("CharismaComment").innerText = "Popular."}
 			else if (variableValue < 17 ){document.getElementById("CharismaComment").innerText = "Quite Eloquent."}
-			else if (variableValue < 19 ){document.getElementById("CharismaComment").innerText = "Everyone's Friend"}
-			else if (variableValue === 20 ){document.getElementById("CharismaComment").innerText = "Renowned"}
+			else if (variableValue < 19 ){document.getElementById("CharismaComment").innerText = "Everyone's Friend."}
+			else if (variableValue === 20 ){document.getElementById("CharismaComment").innerText = "Renowned."}
 		});
 		
 
