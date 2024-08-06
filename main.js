@@ -1094,10 +1094,15 @@ saveInfo.classList.add("save-info");
 
 const slotParagraph = document.createElement("p");
 slotParagraph.textContent = `Slot: ${index + 1}`;
+slotParagraph.classList.add("slot"); // Add a class for styling
 
 const levelParagraph = document.createElement("p");
 levelParagraph.textContent = `Level: ${save.currentLevel}`;
 levelParagraph.classList.add("level"); // Add a class for styling
+
+const saveNameParagraph = document.createElement("p");
+saveNameParagraph.textContent = `Save Name: ${save.saveName}`;
+saveNameParagraph.classList.add("saveName"); // Add a class for styling
 
 const locationParagraph = document.createElement("p");
 locationParagraph.textContent = `Location: ${save.currentLocation}`;
@@ -1113,6 +1118,7 @@ function clearSelectedSlots() {
 // Append the paragraphs to the save-info div
 		saveInfo.appendChild(slotParagraph);
 		saveInfo.appendChild(levelParagraph);
+		saveInfo.appendChild(saveNameParagraph);
 		saveInfo.appendChild(locationParagraph);
         // Add click event to load the selected save
         saveSlot.addEventListener("click", () => {
@@ -1154,13 +1160,20 @@ function saveGameSlot(currentSlotIndex) {
         });
 
         console.log("Saved elements data:", elementsData);
-        // Save paragraph content and image sources in your savedSlots or any other data structure
+        let saveName = prompt("Enter a name for this save:");
+        if (!saveName) {
+            console.log("Save cancelled. No save name entered.");
+            return;
+        }
+
+        // Save paragraph content, image sources, and save name in your savedSlots or any other data structure
         savedSlots[currentSlotIndex] = {
             state: currentState,
             elements: elementsData,
             currentLevel: currentLevel,
             currentLocation: currentLocation,
-			inventory: inventoryData
+            inventory: inventoryData,
+            saveName: saveName // Add save name to the saved slot data
         };
 
         window.localStorage.setItem('save-slots', JSON.stringify(savedSlots));

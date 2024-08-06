@@ -1392,8 +1392,23 @@ button img {
 .save-info p.level {
     /* Style the Level <p> element */
     position: absolute;
-	bottom: 0; /* Position at the bottom */
-    right: 0; /* Position at the right */
+	bottom: -30px; /* Position at the bottom */
+    right: 0px; /* Position at the right */
+
+}
+
+.save-info p.saveName {
+    /* Style the saveName <p> element */
+    position: absolute;
+	top: 15px; /* Position at the bottom */
+    left: 0px; /* Position at the right */
+
+}
+.save-info p.slot {
+    /* Style the saveName <p> element */
+    position: absolute;
+	top: -10px; /* Position at the bottom */
+    left: 0px; /* Position at the right */
 
 }
 
