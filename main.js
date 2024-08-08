@@ -986,8 +986,8 @@ if (storedVersion !== currentVersion) {
             document.body.classList.toggle("dark");
         });
 
-	
-	let currentSlotIndex = 0;
+
+	let currentSlotIndex = parseInt(localStorage.getItem('currentSlotIndex')) || 0;
 	let dummySlotClicked = localStorage.getItem('dummySlotClicked') === 'true' || false;
 	let savedSlots = JSON.parse(window.localStorage.getItem('save-slots')) || [];
 	let selectedSaveIndex = null;
@@ -1024,7 +1024,7 @@ if (storedVersion !== currentVersion) {
     });
 deleteSelectedSaves.addEventListener("click", function() {
          if (selectedSaveIndex !== null) {
-		let savedSlots = JSON.parse(window.localStorage.getItem('save-slots')) || [];
+        let savedSlots = JSON.parse(window.localStorage.getItem('save-slots')) || [];
         console.log("Before deletion:", savedSlots);
 
         // Create a new array excluding the selected save
@@ -1038,13 +1038,13 @@ deleteSelectedSaves.addEventListener("click", function() {
         // Update savedSlots with the modified array
         savedSlots = updatedSlots;
 
-        // Reset currentSlotIndex if needed
-       currentSlotIndex = Math.max(currentSlotIndex - 1, 0);
+        // Reset currentSlotIndex to the highest index in the updated array or zero if empty
+        currentSlotIndex = Math.max(updatedSlots.length - 1, 0);
 
         // Clear the selected save index
         selectedSaveIndex = null;
 
-        // Render the updated save slots only if there are remaining saves
+        // Render the updated save slots
         renderSaveSlots();
     }
     localStorage.setItem('currentSlotIndex', currentSlotIndex);
@@ -1056,8 +1056,8 @@ function renderSaveSlots() {
     saveSlotsContainer.innerHTML = ""; // Clear previous slots
     let savedSlots = JSON.parse(window.localStorage.getItem('save-slots')) || [];
 
-// Add a dummy slot
-   const dummySaveSlot = document.createElement("div");
+    // Add a dummy slot
+    const dummySaveSlot = document.createElement("div");
     dummySaveSlot.classList.add("save-slot");
     const dummySaveInfo = document.createElement("div");
     dummySaveInfo.classList.add("save-info");
@@ -1065,21 +1065,15 @@ function renderSaveSlots() {
     dummyParagraph.textContent = "NEW SAVE";
     dummySaveInfo.appendChild(dummyParagraph);
     dummySaveSlot.appendChild(dummySaveInfo);
-let dummySlotClicked = false;
 
-dummySaveSlot.addEventListener("click", () => {
-    // Handle the click event for the dummy slot only if it hasn't been clicked before
-	
-    if (!dummySlotClicked) {
-		selectedSaveIndex = currentSlotIndex;
-        dummySlotClicked = true;	
-        // Increment currentSlotIndex so that the next save will be in a new slot
-		currentSlotIndex++;
-		// Store values in localStorage
-        localStorage.setItem('currentSlotIndex', currentSlotIndex);
-        localStorage.setItem('dummySlotClicked', dummySlotClicked);
-		
-    }
+    dummySaveSlot.addEventListener("click", () => {
+        if (!dummySlotClicked) {
+            selectedSaveIndex = currentSlotIndex;
+            dummySlotClicked = true;
+            currentSlotIndex++;
+            localStorage.setItem('currentSlotIndex', currentSlotIndex);
+            localStorage.setItem('dummySlotClicked', dummySlotClicked);
+        }
     });
     saveSlotsContainer.appendChild(dummySaveSlot);
 
