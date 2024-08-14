@@ -846,7 +846,7 @@ if (storedVersion !== currentVersion) {
 
     // Scrolls the page down, but no further than the bottom edge of what you could
     // see previously, so it doesn't go too far.
-  function scrollDown(previousBottomEdge) {
+function scrollDown(previousBottomEdge) {
     // Line up top of screen with the bottom of where the previous content ended
     var target = previousBottomEdge;
 
@@ -856,33 +856,43 @@ if (storedVersion !== currentVersion) {
 
     var start = outerScrollContainer.scrollTop;
 
-    // If start is 0, try to set it to target to prevent the reset on mobile
+    // If start is 0 and we're already at the target, return early
+    if (start === target) return;
+
+    // If start is 0, set it directly to target to prevent the reset on mobile
     if (start === 0) {
         outerScrollContainer.scrollTop = target;
         start = outerScrollContainer.scrollTop;
     }
 
     var dist = target - start;
-    var duration = 300 + 300 * dist / 100;
+    var duration = 300 + 300 * Math.abs(dist) / 100; // Adjust duration based on distance
     var startTime = null;
 
     function step(time) {
         if (startTime == null) startTime = time;
         var t = (time - startTime) / duration;
         var lerp = 3 * t * t - 2 * t * t * t; // ease in/out
-        outerScrollContainer.scrollTo(0, (1.0 - lerp) * start + lerp * target);
-        if (t < 1) requestAnimationFrame(step);
+
+        // Only perform scrolling if t is within the duration
+        if (t < 1) {
+            outerScrollContainer.scrollTo(0, (1.0 - lerp) * start + lerp * target);
+            requestAnimationFrame(step);
+        } else {
+            // Ensure we end up exactly at the target position
+            outerScrollContainer.scrollTo(0, target);
+        }
     }
+
     requestAnimationFrame(step);
 }
 
-
-    // The Y coordinate of the bottom end of all the story content, used
-    // for growing the container, and deciding how far to scroll.
-    function contentBottomEdgeY() {
-        var bottomElement = storyContainer.lastElementChild;
-        return bottomElement ? bottomElement.offsetTop + bottomElement.offsetHeight : 0;
-    }
+// The Y coordinate of the bottom end of all the story content, used
+// for growing the container, and deciding how far to scroll.
+function contentBottomEdgeY() {
+    var bottomElement = storyContainer.lastElementChild;
+    return bottomElement ? bottomElement.offsetTop + bottomElement.offsetHeight : 0;
+}
 
     // Remove all elements that match the given selector. Used for removing choices after
     // you've picked one, as well as for the CLEAR and RESTART tags.
