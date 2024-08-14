@@ -23,7 +23,7 @@ story.BindExternalFunction("get_name", () => {
 
 	
 	let playerName = 'Anon'
-		let currentLocation = "Nowhere"
+		let currentLocation = story.variablesState["currentLocation"] 
 		let currentLevel = 1;
 		let currentHp = 0;
 		let maxHp = 0;
@@ -846,29 +846,36 @@ if (storedVersion !== currentVersion) {
 
     // Scrolls the page down, but no further than the bottom edge of what you could
     // see previously, so it doesn't go too far.
-    function scrollDown(previousBottomEdge) {
+  function scrollDown(previousBottomEdge) {
+    // Line up top of screen with the bottom of where the previous content ended
+    var target = previousBottomEdge;
 
-        // Line up top of screen with the bottom of where the previous content ended
-        var target = previousBottomEdge;
+    // Can't go further than the very bottom of the page
+    var limit = outerScrollContainer.scrollHeight - outerScrollContainer.clientHeight;
+    if (target > limit) target = limit;
 
-        // Can't go further than the very bottom of the page
-        var limit = outerScrollContainer.scrollHeight - outerScrollContainer.clientHeight;
-        if( target > limit ) target = limit;
+    var start = outerScrollContainer.scrollTop;
 
-        var start = outerScrollContainer.scrollTop;
-
-        var dist = target - start;
-        var duration = 300 + 300*dist/100;
-        var startTime = null;
-        function step(time) {
-            if( startTime == null ) startTime = time;
-            var t = (time-startTime) / duration;
-            var lerp = 3*t*t - 2*t*t*t; // ease in/out
-            outerScrollContainer.scrollTo(0, (1.0-lerp)*start + lerp*target);
-            if( t < 1 ) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+    // If start is 0, try to set it to target to prevent the reset on mobile
+    if (start === 0) {
+        outerScrollContainer.scrollTop = target;
+        start = outerScrollContainer.scrollTop;
     }
+
+    var dist = target - start;
+    var duration = 300 + 300 * dist / 100;
+    var startTime = null;
+
+    function step(time) {
+        if (startTime == null) startTime = time;
+        var t = (time - startTime) / duration;
+        var lerp = 3 * t * t - 2 * t * t * t; // ease in/out
+        outerScrollContainer.scrollTo(0, (1.0 - lerp) * start + lerp * target);
+        if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+
 
     // The Y coordinate of the bottom end of all the story content, used
     // for growing the container, and deciding how far to scroll.
@@ -1167,6 +1174,14 @@ function saveGameSlot(currentSlotIndex) {
             currentLevel: currentLevel,
             currentLocation: currentLocation,
             inventory: inventoryData,
+			currentHp: currentHp,
+			will: will,
+			maxWill: maxWill,
+			maxHp: maxHp,
+			lust: lust,
+			currentXp: currentXp,
+			needXp: needXp,
+			
             saveName: saveName // Add save name to the saved slot data
         };
 
@@ -1206,13 +1221,14 @@ function loadSaveSlot(currentSlotIndex) {
 				
 				  // Load the inventory data
                 inventory = JSON.parse(inventoryData);
-
+				let will = savedData.will
+				let maxWill = savedData.maxWill
                 // Assuming you have a function to update the inventory UI
                 updateInventoryUI();
-
+				updateWillUI(will, maxWill);
                 // Assuming you have a function to continue the story
                 continueStory(true);
-
+				
                 console.log(`Loaded game from Save Slot ${currentSlotIndex + 1}`);
             } else {
                 console.error(`Invalid save data structure in slot ${currentSlotIndex}`);
@@ -1429,6 +1445,7 @@ function showImages(containerId) {
 }
 
 	// Stats
+	
 		story.ObserveVariable("strength", function(variableName, variableValue) {
 			document.getElementById("StrengthNum").innerText = variableValue
 			if (variableValue === 1) {document.getElementById("StrengthComment").innerText = "Morbidly Weak."}
@@ -1552,7 +1569,11 @@ function showImages(containerId) {
 		});
 		
 		
-		
+	function updateWillUI(will,maxWill){
+	document.getElementById("willNum").innerText = will + " / "+ maxWill;
+			const willPercent = percent(will,maxWill);
+			document.getElementById("willBar").style.width = `${willPercent}%`;
+	}		
 		story.ObserveVariable("xp", function(variableName, newValue) {
 			currentXp = newValue;
 			document.getElementById("xpNum").innerText = currentXp + " / "+ needXp;
