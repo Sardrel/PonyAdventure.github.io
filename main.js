@@ -1764,27 +1764,34 @@ const npcSellers = {
 
 
 story.ObserveVariable("bits", function(variableName, newValue) {
-  const bitsItem = inventory.find(item => item.name === 'Bits');
-  const quantityChange = newValue - (bitsItem?.quantity || 0); // Handles initial case where bitsItem is null
+  let bitsItem = inventory.find(item => item.name === 'Bits');
+  const quantityChange = newValue - (bitsItem?.quantity || 0);
 
-  if (quantityChange > 0) {
-    // Bits increased, update quantity
-    bitsItem.quantity = newValue;
-  } else if (quantityChange < 0) {
-    // Bits decreased, remove some from inventory
-    const amountToRemove = Math.abs(quantityChange);
-   if (bitsItem) {
-  bitsItem.quantity = Math.max(bitsItem.quantity - amountToRemove, 0);
-  //  Ensure quantity doesn't go below 0
-  if (bitsItem.quantity === 0) {
-    const indexToRemove = inventory.indexOf(bitsItem);
-    inventory.splice(indexToRemove, 1);
-  }
-}
-  }
-  updateInventoryUI();
-});
+  if (!bitsItem) {
+    // If bitsItem doesn't exist, and newValue is greater than 0, add it to the inventory
+    if (newValue > 0) {
+      bitsItem = { name: 'Bits', quantity: newValue };
+      inventory.push(bitsItem);
+    }
+  } else {
+    // Handle changes to bitsItem's quantity
+    if (quantityChange > 0) {
+      bitsItem.quantity = newValue;
+    } else if (quantityChange < 0) {
+      const amountToRemove = Math.abs(quantityChange);
+      bitsItem.quantity = Math.max(bitsItem.quantity - amountToRemove, 0);
 
+      // If quantity drops to 0, remove the item from the inventory
+      if (bitsItem.quantity === 0) {
+        const indexToRemove = inventory.indexOf(bitsItem);
+        if (indexToRemove !== -1) {
+          inventory.splice(indexToRemove, 1);
+        }
+      }
+    }
+  }
+})
+	
  const ponyContainer = document.getElementById('ponyContainer');
  const zebraContainer = document.getElementById('zebraContainer');
  const ponyButton = document.getElementById('ponybutton');
