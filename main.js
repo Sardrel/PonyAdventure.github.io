@@ -1726,15 +1726,20 @@ story.ObserveVariable("unicorn", function(variableName, newValue) {
   
 
 story.BindExternalFunction("enemyHarm", (x) => {
-	const damageAmount = calculateDamage(currentItem.damage);
+  let damageAmount;
+
   if (x < 0) {
-    // Calculate damage based on currentItem.damage
-    const damageAmount = calculateDamage('+1');
-    enemyCurrentHP = enemyCurrentHP - damageAmount + Attack_Mod;
+    // Calculate damage with +1 modifier
+    damageAmount = calculateDamage('+1');
   } else {
-    enemyCurrentHP = enemyCurrentHP - calculateDamage(currentItem.damage) + Attack_Mod;
+    damageAmount = calculateDamage(currentItem.damage);
   }
-console.log(`You delt ${damageAmount+Attack_Mod} damage.`);
+
+  const totalDamage = damageAmount + Attack_Mod;
+  enemyCurrentHP -= totalDamage; // Subtract damage from enemyCurrentHP
+
+  console.log(`You dealt ${totalDamage} damage.`);
+
   if (enemyCurrentHP < 0) {
     enemyCurrentHP = 0;
   }
@@ -1812,6 +1817,5 @@ story.ObserveVariable("bits", function(variableName, newValue) {
 		zebraContainer.classList.add("show");
 	  });
 	  
-
 
 }})(storyContent);
